@@ -436,7 +436,7 @@ static int venc_power_on(struct omap_dss_device *dssdev)
 	dispc_set_digit_size(dssdev->panel.timings.x_res,
 			dssdev->panel.timings.y_res/2);
 
-	regulator_enable(venc.vdda_dac_reg);
+	// regulator_enable(venc.vdda_dac_reg);
 
 	if (dssdev->platform_enable)
 		dssdev->platform_enable(dssdev);
@@ -461,7 +461,7 @@ static void venc_power_off(struct omap_dss_device *dssdev)
 	if (dssdev->platform_disable)
 		dssdev->platform_disable(dssdev);
 
-	regulator_disable(venc.vdda_dac_reg);
+	// regulator_disable(venc.vdda_dac_reg);
 
 #ifdef CONFIG_OMAP2_DSS_USE_DSI_PLL
 	dsi_pll_uninit();
@@ -680,12 +680,12 @@ int venc_init(struct platform_device *pdev)
 		return -ENOMEM;
 	}
 
-	venc.vdda_dac_reg = dss_get_vdda_dac();
-	if (IS_ERR(venc.vdda_dac_reg)) {
-		iounmap(venc.base);
-		DSSERR("can't get VDDA_DAC regulator\n");
-		return PTR_ERR(venc.vdda_dac_reg);
-	}
+	// venc.vdda_dac_reg = dss_get_vdda_dac();
+	// if (IS_ERR(venc.vdda_dac_reg)) {
+	// 	iounmap(venc.base);
+	// 	DSSERR("can't get VDDA_DAC regulator\n");
+	// 	return PTR_ERR(venc.vdda_dac_reg);
+	// }
 
 	venc_enable_clocks(1);
 

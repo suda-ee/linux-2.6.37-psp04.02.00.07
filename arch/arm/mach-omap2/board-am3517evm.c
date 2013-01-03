@@ -21,13 +21,13 @@
 #include <linux/clk.h>
 #include <linux/platform_device.h>
 #include <linux/gpio.h>
-#include <linux/i2c/pca953x.h>
+// #include <linux/i2c/pca953x.h>
 #include <linux/can/platform/ti_hecc.h>
 #include <linux/davinci_emac.h>
 #include <linux/irq.h>
-#include <linux/i2c/tsc2004.h>
+// #include <linux/i2c/tsc2004.h>
 #include <linux/input.h>
-#include <linux/tca6416_keypad.h>
+// #include <linux/tca6416_keypad.h>
 #include <linux/mmc/host.h>
 #include <linux/mtd/physmap.h>
 #include <linux/mtd/mtd.h>
@@ -48,7 +48,7 @@
 #include <plat/nand.h>
 
 #include <media/davinci/vpfe_capture.h>
-#include <media/tvp514x.h>
+// #include <media/tvp514x.h>
 
 #include "mux.h"
 #include "control.h"
@@ -217,10 +217,10 @@ static void am3517_evm_ethernet_init(struct emac_platform_data *pdata)
 /*
  * VPFE - Video Decoder interface
  */
-#define TVP514X_STD_ALL		(V4L2_STD_NTSC | V4L2_STD_PAL)
+// #define TVP514X_STD_ALL		(V4L2_STD_NTSC | V4L2_STD_PAL)
 
 /* Inputs available at the TVP5146 */
-static struct v4l2_input tvp5146_inputs[] = {
+/* static struct v4l2_input tvp5146_inputs[] = {
 	{
 		.index	= 0,
 		.name	= "Composite",
@@ -270,45 +270,45 @@ static struct vpfe_subdev_info vpfe_sub_devs[] = {
 			.platform_data = &tvp5146_pdata,
 		},
 	},
-};
+}; */
 
-static void am3517_evm_clear_vpfe_intr(int vdint)
-{
-	unsigned int vpfe_int_clr;
+// static void am3517_evm_clear_vpfe_intr(int vdint)
+// {
+// 	unsigned int vpfe_int_clr;
+// 
+// 	vpfe_int_clr = omap_ctrl_readl(AM35XX_CONTROL_LVL_INTR_CLEAR);
+// 
+// 	switch (vdint) {
+// 	/* VD0 interrrupt */
+// 	case INT_35XX_CCDC_VD0_IRQ:
+// 		vpfe_int_clr &= ~AM35XX_VPFE_CCDC_VD0_INT_CLR;
+// 		vpfe_int_clr |= AM35XX_VPFE_CCDC_VD0_INT_CLR;
+// 		break;
+// 	/* VD1 interrrupt */
+// 	case INT_35XX_CCDC_VD1_IRQ:
+// 		vpfe_int_clr &= ~AM35XX_VPFE_CCDC_VD1_INT_CLR;
+// 		vpfe_int_clr |= AM35XX_VPFE_CCDC_VD1_INT_CLR;
+// 		break;
+// 	/* VD2 interrrupt */
+// 	case INT_35XX_CCDC_VD2_IRQ:
+// 		vpfe_int_clr &= ~AM35XX_VPFE_CCDC_VD2_INT_CLR;
+// 		vpfe_int_clr |= AM35XX_VPFE_CCDC_VD2_INT_CLR;
+// 		break;
+// 	/* Clear all interrrupts */
+// 	default:
+// 		vpfe_int_clr &= ~(AM35XX_VPFE_CCDC_VD0_INT_CLR |
+// 				AM35XX_VPFE_CCDC_VD1_INT_CLR |
+// 				AM35XX_VPFE_CCDC_VD2_INT_CLR);
+// 		vpfe_int_clr |= (AM35XX_VPFE_CCDC_VD0_INT_CLR |
+// 				AM35XX_VPFE_CCDC_VD1_INT_CLR |
+// 				AM35XX_VPFE_CCDC_VD2_INT_CLR);
+// 		break;
+// 	}
+// 	omap_ctrl_writel(vpfe_int_clr, AM35XX_CONTROL_LVL_INTR_CLEAR);
+// 	vpfe_int_clr = omap_ctrl_readl(AM35XX_CONTROL_LVL_INTR_CLEAR);
+// }
 
-	vpfe_int_clr = omap_ctrl_readl(AM35XX_CONTROL_LVL_INTR_CLEAR);
-
-	switch (vdint) {
-	/* VD0 interrrupt */
-	case INT_35XX_CCDC_VD0_IRQ:
-		vpfe_int_clr &= ~AM35XX_VPFE_CCDC_VD0_INT_CLR;
-		vpfe_int_clr |= AM35XX_VPFE_CCDC_VD0_INT_CLR;
-		break;
-	/* VD1 interrrupt */
-	case INT_35XX_CCDC_VD1_IRQ:
-		vpfe_int_clr &= ~AM35XX_VPFE_CCDC_VD1_INT_CLR;
-		vpfe_int_clr |= AM35XX_VPFE_CCDC_VD1_INT_CLR;
-		break;
-	/* VD2 interrrupt */
-	case INT_35XX_CCDC_VD2_IRQ:
-		vpfe_int_clr &= ~AM35XX_VPFE_CCDC_VD2_INT_CLR;
-		vpfe_int_clr |= AM35XX_VPFE_CCDC_VD2_INT_CLR;
-		break;
-	/* Clear all interrrupts */
-	default:
-		vpfe_int_clr &= ~(AM35XX_VPFE_CCDC_VD0_INT_CLR |
-				AM35XX_VPFE_CCDC_VD1_INT_CLR |
-				AM35XX_VPFE_CCDC_VD2_INT_CLR);
-		vpfe_int_clr |= (AM35XX_VPFE_CCDC_VD0_INT_CLR |
-				AM35XX_VPFE_CCDC_VD1_INT_CLR |
-				AM35XX_VPFE_CCDC_VD2_INT_CLR);
-		break;
-	}
-	omap_ctrl_writel(vpfe_int_clr, AM35XX_CONTROL_LVL_INTR_CLEAR);
-	vpfe_int_clr = omap_ctrl_readl(AM35XX_CONTROL_LVL_INTR_CLEAR);
-}
-
-static struct vpfe_config vpfe_cfg = {
+/* static struct vpfe_config vpfe_cfg = {
 	.num_subdevs	= ARRAY_SIZE(vpfe_sub_devs),
 	.i2c_adapter_id	= 3,
 	.sub_devs	= vpfe_sub_devs,
@@ -341,18 +341,18 @@ static struct platform_device vpfe_capture_dev = {
 		.coherent_dma_mask	= DMA_BIT_MASK(32),
 		.platform_data		= &vpfe_cfg,
 	},
-};
+}; */
 
-static struct resource dm644x_ccdc_resource[] = {
-	/* CCDC Base address */
-	{
-		.start	= AM35XX_IPSS_VPFE_BASE,
-		.end	= AM35XX_IPSS_VPFE_BASE + 0xffff,
-		.flags	= IORESOURCE_MEM,
-	},
-};
+// static struct resource dm644x_ccdc_resource[] = {
+// 	/* CCDC Base address */
+// 	{
+// 		.start	= AM35XX_IPSS_VPFE_BASE,
+// 		.end	= AM35XX_IPSS_VPFE_BASE + 0xffff,
+// 		.flags	= IORESOURCE_MEM,
+// 	},
+// };
 
-static struct platform_device dm644x_ccdc_dev = {
+/* static struct platform_device dm644x_ccdc_dev = {
 	.name		= "dm644x_ccdc",
 	.id		= -1,
 	.num_resources	= ARRAY_SIZE(dm644x_ccdc_resource),
@@ -361,22 +361,22 @@ static struct platform_device dm644x_ccdc_dev = {
 		.dma_mask		= &vpfe_capture_dma_mask,
 		.coherent_dma_mask	= DMA_BIT_MASK(32),
 	},
-};
+}; */
 
 #define LCD_PANEL_PWR		176
 #define LCD_PANEL_BKLIGHT_PWR	182
 #define LCD_PANEL_PWM		181
 
 static struct i2c_board_info __initdata am3517evm_i2c1_boardinfo[] = {
-	{
+	/* {
 		I2C_BOARD_INFO("s35390a", 0x30),
-	},
+	}, */
 };
 
 /*
  * RTC - S35390A
  */
-#define GPIO_RTCS35390A_IRQ	55
+/* #define GPIO_RTCS35390A_IRQ	55
 
 static void __init am3517_evm_rtc_init(void)
 {
@@ -397,24 +397,27 @@ static void __init am3517_evm_rtc_init(void)
 		return;
 	}
 	am3517evm_i2c1_boardinfo[0].irq = gpio_to_irq(GPIO_RTCS35390A_IRQ);
-}
+} */
 
 /*
  * I2C GPIO Expander - TCA6416
  */
 
-/* Mounted on Base-Board */
+/* Mounted on Base-Board
 static struct pca953x_platform_data am3517evm_gpio_expander_info_0 = {
 	.gpio_base	= OMAP_MAX_GPIO_LINES,
-};
+}; */
 static struct i2c_board_info __initdata am3517evm_i2c2_boardinfo[] = {
 	{
+		I2C_BOARD_INFO("pca8565", 0x51),
+	},
+	/* {
 		I2C_BOARD_INFO("tlv320aic23", 0x1A),
 	},
 	{
 		I2C_BOARD_INFO("tca6416", 0x21),
 		.platform_data = &am3517evm_gpio_expander_info_0,
-	},
+	}, */
 };
 
 /* Mounted on UI Card */
@@ -433,6 +436,7 @@ static struct i2c_board_info __initdata am3517evm_i2c2_boardinfo[] = {
 #define KEYPAD_BUTTON_LOW(event_code)	\
 	KEYPAD_BUTTON(EV_KEY, event_code, 1)
 
+/* 
 static int tca6416_keypad_init_irq(void)
 {
 	int ret = 0;
@@ -475,22 +479,22 @@ static struct tca6416_keys_platform_data am3517evm_tca6416_keys_info = {
 
 static struct pca953x_platform_data am3517evm_ui_gpio_expander_info_2 = {
 	.gpio_base	= OMAP_MAX_GPIO_LINES + 16,
-};
+}; */
 static struct i2c_board_info __initdata am3517evm_i2c3_boardinfo[] = {
-	{
+	/* {
 		I2C_BOARD_INFO("tca6416-keys", 0x20),
 		.platform_data = &am3517evm_tca6416_keys_info,
 	},
 	{
 		I2C_BOARD_INFO("tca6416", 0x21),
 		.platform_data = &am3517evm_ui_gpio_expander_info_2,
-	},
+	}, */
 };
 
 /*
  * TSC 2004 Support
  */
-#define	GPIO_TSC2004_IRQ	65
+/* #define	GPIO_TSC2004_IRQ	65
 
 static int tsc2004_init_irq(void)
 {
@@ -537,7 +541,7 @@ static struct i2c_board_info __initdata am3517evm_tsc_i2c_boardinfo[] = {
 		.type		= "tsc2004",
 		.platform_data	= &am3517evm_tsc2004data,
 	},
-};
+}; */
 
 static int __init am3517_evm_i2c_init(void)
 {
@@ -553,8 +557,8 @@ static int __init am3517_evm_i2c_init(void)
 static int lcd_enabled;
 static int dvi_enabled;
 
-#if defined(CONFIG_PANEL_SHARP_LQ043T1DG01) || \
-		defined(CONFIG_PANEL_SHARP_LQ043T1DG01_MODULE)
+/* #if defined(CONFIG_PANEL_SHARP_LQ043T1DG01) || \
+		defined(CONFIG_PANEL_SHARP_LQ043T1DG01_MODULE) */
 static void __init am3517_evm_display_init(void)
 {
 	int r;
@@ -598,9 +602,9 @@ err_2:
 err_1:
 	gpio_free(LCD_PANEL_BKLIGHT_PWR);
 }
-#else
-static void __init am3517_evm_display_init(void) {}
-#endif
+// #else
+// static void __init am3517_evm_display_init(void) {}
+// #endif
 
 static int am3517_evm_panel_enable_lcd(struct omap_dss_device *dssdev)
 {
@@ -623,12 +627,12 @@ static void am3517_evm_panel_disable_lcd(struct omap_dss_device *dssdev)
 static struct omap_dss_device am3517_evm_lcd_device = {
 	.type			= OMAP_DISPLAY_TYPE_DPI,
 	.name			= "lcd",
-	.driver_name		= "sharp_lq_panel",
-	.phy.dpi.data_lines 	= 16,
+	.driver_name		= "innolux_panel",
+	.phy.dpi.data_lines 	= 18,
 	.platform_enable	= am3517_evm_panel_enable_lcd,
 	.platform_disable	= am3517_evm_panel_disable_lcd,
 };
-
+/*
 static int am3517_evm_panel_enable_tv(struct omap_dss_device *dssdev)
 {
 	return 0;
@@ -671,11 +675,11 @@ static struct omap_dss_device am3517_evm_dvi_device = {
 	.platform_enable	= am3517_evm_panel_enable_dvi,
 	.platform_disable	= am3517_evm_panel_disable_dvi,
 };
-
+*/
 static struct omap_dss_device *am3517_evm_dss_devices[] = {
 	&am3517_evm_lcd_device,
-	&am3517_evm_tv_device,
-	&am3517_evm_dvi_device,
+	/* &am3517_evm_tv_device,
+	&am3517_evm_dvi_device, */
 };
 
 static struct omap_dss_board_info am3517_evm_dss_data = {
@@ -700,8 +704,8 @@ static struct omap_board_config_kernel am3517_evm_config[] __initdata = {
 
 static struct platform_device *am3517_evm_devices[] __initdata = {
 	&am3517_evm_dss_device,
-	&dm644x_ccdc_dev,
-	&vpfe_capture_dev,
+	/* &dm644x_ccdc_dev,
+	&vpfe_capture_dev, */
 };
 
 static void __init am3517_evm_init_irq(void)
@@ -913,10 +917,10 @@ static void __init am3517_evm_init(void)
 	usb_ehci_init(&ehci_pdata);
 	am3517_evm_hecc_init(&am3517_evm_hecc_pdata);
 
-	clk_add_alias("master", "dm644x_ccdc", "master",
+	/* clk_add_alias("master", "dm644x_ccdc", "master",
 			&vpfe_capture_dev.dev);
 	clk_add_alias("slave", "dm644x_ccdc", "slave",
-			&vpfe_capture_dev.dev);
+			&vpfe_capture_dev.dev); */
 
 	/* DSS */
 	am3517_evm_display_init();
@@ -927,8 +931,8 @@ static void __init am3517_evm_init(void)
 					ARRAY_SIZE(am3517evm_nand_partitions), 0, NAND_BUSWIDTH_16);
 #endif
 
-	/* RTC - S35390A */
-	am3517_evm_rtc_init();
+	/* RTC - S35390A
+	am3517_evm_rtc_init(); */
 
 	i2c_register_board_info(1, am3517evm_i2c1_boardinfo,
 				ARRAY_SIZE(am3517evm_i2c1_boardinfo));
@@ -939,13 +943,13 @@ static void __init am3517_evm_init(void)
 	am3517_evm_musb_init();
 
 	/* TSC 2004 */
-	omap_mux_init_gpio(65, OMAP_PIN_INPUT_PULLUP);
+	/* omap_mux_init_gpio(65, OMAP_PIN_INPUT_PULLUP);
 	am3517evm_tsc_i2c_boardinfo[0].irq = gpio_to_irq(GPIO_TSC2004_IRQ);
 	i2c_register_board_info(1, am3517evm_tsc_i2c_boardinfo,
-				ARRAY_SIZE(am3517evm_tsc_i2c_boardinfo));
+				ARRAY_SIZE(am3517evm_tsc_i2c_boardinfo)); */
 
-	/* Init TCA6416 keypad */
-	tca6416_keypad_init_irq();
+	/* Init TCA6416 keypad
+	tca6416_keypad_init_irq(); */
 
 	/* MMC init function */
 	omap2_hsmmc_init(mmc);

@@ -44,4 +44,10 @@ config PANEL_ACX565AKM
 	select BACKLIGHT_CLASS_DEVICE
 	help
 	  This is the LCD panel used on Nokia N900
+
+config PANEL_INNOLUX_AT070TN83
+        tristate "Innolux AT070TN83 LCD Panel"
+        depends on OMAP2_DSS
+        help
+          LCD Panel used in Suda's AM3517 boards
 endmenu
