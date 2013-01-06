@@ -26,7 +26,7 @@ static struct omap_video_timings innolux_panel_timings = {
 	/* 800 x 480 @ 68 Hz  Reduced blanking VESA CVT 0.31M3-R */
 	.x_res		= 800,
 	.y_res		= 480,
-	.pixel_clock	= 33230,
+	.pixel_clock	= 28800,
 	.hfp		= 40,
 	.hsw		= 48,
 	.hbp		= 40,
@@ -72,9 +72,9 @@ static void innolux_panel_power_off(struct omap_dss_device *dssdev)
 
 static int innolux_panel_probe(struct omap_dss_device *dssdev)
 {
-	dssdev->panel.config |= OMAP_DSS_LCD_TFT;
+	dssdev->panel.config |= OMAP_DSS_LCD_TFT | OMAP_DSS_LCD_IVS
+                                | OMAP_DSS_LCD_IHS;
 	dssdev->panel.timings = innolux_panel_timings;
-        /* dssdev->panel.acb = 0x28; */
 
 	return 0;
 }
