@@ -424,6 +424,12 @@ config SPI_TLE62X0
 	  sysfs interface, with each line presented as a kind of GPIO
 	  exposing both switch control and diagnostic feedback.
 
+config SPI_FPGADEV_SUDA
+	tristate "FPGA SPI dev of suda"
+	depends on SYSFS
+	help
+	  SPI driver for FPGA SPI device of suda.
+
 #
 # Add new SPI protocol masters in alphabetical order above this line
 #

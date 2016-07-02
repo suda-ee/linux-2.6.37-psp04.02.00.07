@@ -47,6 +47,8 @@
 #include <plat/gpmc.h>
 #include <plat/nand.h>
 
+#include <linux/spi/spi.h>
+
 #include <media/davinci/vpfe_capture.h>
 // #include <media/tvp514x.h>
 
@@ -901,6 +903,40 @@ static struct omap2_hsmmc_info mmc[] = {
 	{}      /* Terminator */
 };
 
+#define GPIO_FPGADEV_IRQ	138
+static struct spi_board_info spi_board_info[] __initdata = {
+	{
+		.modalias	= "fpgadev",
+		/* .platform_data	= &fpgadev_info, */
+		.mode		= SPI_MODE_0,
+		.irq		= GPIO_FPGADEV_IRQ,
+		.max_speed_hz	= 48000000,
+		.bus_num	= 1,
+		.chip_select	= 0,
+	},
+};
+
+static void __init am3517_suda_fpgadev_init(void)
+{
+	int r;
+
+	omap_mux_init_gpio(GPIO_FPGADEV_IRQ, OMAP_PIN_INPUT_PULLDOWN);
+	r = gpio_request(GPIO_FPGADEV_IRQ, "fpgadev-irq");
+	if (r < 0) {
+		printk(KERN_WARNING "failed to request GPIO#%d\n",
+				GPIO_FPGADEV_IRQ);
+		return;
+	}
+	r = gpio_direction_input(GPIO_FPGADEV_IRQ);
+	if (r < 0) {
+		printk(KERN_WARNING "GPIO#%d cannot be configured as input\n",
+				GPIO_FPGADEV_IRQ);
+		gpio_free(GPIO_FPGADEV_IRQ);
+		return;
+	}
+	spi_board_info[0].irq = gpio_to_irq(GPIO_FPGADEV_IRQ);
+	printk(KERN_INFO "board_info: fpga irq: %d\n", spi_board_info[0].irq);
+}
 
 static void __init am3517_evm_init(void)
 {
@@ -956,6 +992,10 @@ static void __init am3517_evm_init(void)
 
 	/* NOR Flash on Application board */
 	am3517_nor_init();
+
+	/* FPGA on suda board */
+	am3517_suda_fpgadev_init();
+	spi_register_board_info(spi_board_info, ARRAY_SIZE(spi_board_info));
 }
 
 MACHINE_START(OMAP3517EVM, "OMAP3517/AM3517 EVM")
